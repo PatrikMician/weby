@@ -1,0 +1,5 @@
+# Seznam webů: název (= složka v sites/) a port. Povolené porty 8081-8999.
+# 8080 patří Cloudu a 8000 Lumenu, ty tu nepoužívej.
+#
+#   název   port
+robot       8082
