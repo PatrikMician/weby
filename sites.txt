@@ -1,5 +1,6 @@
-# Seznam webů: název (= složka v sites/) a port. Povolené porty 8081-8999.
-# 8080 patří Cloudu a 8000 Lumenu, ty tu nepoužívej.
-#
-#   název   port
-robot       8082
+# Jeden web na řádek:  jméno  port
+# Jméno = složka v sites/ (malá písmena, čísla, pomlčka). Port 1024-65535, každý jiný.
+# Obsazené porty: 8000 (Lumen), 8080 (domácí cloud).
+# Adresu pak přidáš jednou v Cloudflare tunelu: Published application routes → HTTP, localhost:<port>
+robot 8082
+portfolio 8083

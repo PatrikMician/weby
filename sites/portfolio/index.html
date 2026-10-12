@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patrik Mičian – Portfolio</title>
+  <meta name="description" content="Portfolio Patrika Mičiana – student IT v průmyslu, programování, sítě a elektro.">
+  <meta name="theme-color" content="#0b0d12">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="bg-glow" aria-hidden="true"></div>
+
+  <header class="nav" id="nav">
+    <a href="#top" class="logo">PM<span>.</span></a>
+    <button class="nav-toggle" id="navToggle" aria-label="Otevřít menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="nav-links" id="navLinks">
+      <a href="#o-mne">O mně</a>
+      <a href="#dovednosti">Dovednosti</a>
+      <a href="#projekty">Projekty</a>
+      <a href="#zivotopis">Vzdělání a praxe</a>
+      <a href="#kontakt" class="nav-cta">Kontakt</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container hero-inner">
+        <p class="eyebrow mono">Ahoj, jsem</p>
+        <h1>Patrik <span class="grad">Mičian</span></h1>
+        <p class="typing mono"><span id="typed"></span><span class="cursor">|</span></p>
+        <p class="lead">Student oboru IT v průmyslu. Programuju, nastavuju sítě a nebojím se ani elektroinstalací. Po maturitě v roce 2027 hledám práci.</p>
+        <div class="hero-actions">
+          <a href="#projekty" class="btn btn-primary">Moje projekty</a>
+          <a href="#kontakt" class="btn btn-ghost">Napsat mi</a>
+        </div>
+      </div>
+      <a href="#o-mne" class="scroll-hint" aria-label="Scrollovat dolů"><span></span></a>
+    </section>
+
+    <!-- O MNĚ -->
+    <section id="o-mne" class="section">
+      <div class="container">
+        <h2 class="section-title reveal"><span class="mono">01</span> O mně</h2>
+        <div class="about-grid">
+          <div class="about-text reveal">
+            <p>Jmenuju se Patrik a studuju obor <strong>IT v průmyslu</strong> na SŠ Jablunkov. Baví mě propojení softwaru s reálným světem, od psaní kódu přes nastavování sítí až po elektroinstalace.</p>
+            <p>Praktické zkušenosti jsem získal na brigádách v elektrotechnické firmě, kde jsem zapojoval zásuvky, světla a pomáhal s rekonstrukcemi elektrických rozvodů.</p>
+            <p>Mám řidičský průkaz a po maturitě v roce 2027 hledám zaměstnání.</p>
+          </div>
+          <div class="stats reveal">
+            <div class="stat"><span class="stat-num" data-count="6">0</span><span class="stat-label">programovacích a značkovacích jazyků</span></div>
+            <div class="stat"><span class="stat-num" data-count="2027">0</span><span class="stat-label">rok maturity</span></div>
+            <div class="stat"><span class="stat-num" data-count="1">0</span><span class="stat-label">elektrotechnická firma</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DOVEDNOSTI -->
+    <section id="dovednosti" class="section">
+      <div class="container">
+        <h2 class="section-title reveal"><span class="mono">02</span> Dovednosti</h2>
+        <div class="skills-grid">
+          <article class="card reveal">
+            <h3>Programování</h3>
+            <div class="chips">
+              <span class="chip">HTML</span>
+              <span class="chip">CSS</span>
+              <span class="chip">Java</span>
+              <span class="chip">Python</span>
+              <span class="chip">C++</span>
+              <span class="chip">C#</span>
+            </div>
+          </article>
+          <article class="card reveal">
+            <h3>Sítě a hardware</h3>
+            <div class="chips">
+              <span class="chip">Konfigurace routerů</span>
+              <span class="chip">Konfigurace switchů</span>
+              <span class="chip">Nastavení počítačů</span>
+              <span class="chip">Zapojení sítě</span>
+            </div>
+          </article>
+          <article class="card reveal">
+            <h3>Elektro</h3>
+            <div class="chips">
+              <span class="chip">Zapojování zásuvek</span>
+              <span class="chip">Zapojování světel</span>
+              <span class="chip">Rozvaděče</span>
+              <span class="chip">Rekonstrukce rozvodů</span>
+            </div>
+          </article>
+          <article class="card reveal">
+            <h3>Ostatní</h3>
+            <div class="chips">
+              <span class="chip">Řidičský průkaz</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJEKTY -->
+    <section id="projekty" class="section">
+      <div class="container">
+        <h2 class="section-title reveal"><span class="mono">03</span> Projekty</h2>
+        <!-- TODO: Uprav si projekty podle sebe (název, popis, technologie, odkaz). -->
+        <div class="projects-grid">
+          <a class="project project-link reveal" href="https://robot.mican.dpdns.org" target="_blank" rel="noopener noreferrer" aria-label="Otevřít maturitní práci Robot v nové záložce">
+            <div class="project-top">
+              <span class="project-icon">⚙</span>
+              <span class="badge badge-alt">Robot</span>
+            </div>
+            <h3>Maturitní práce <span class="arrow" aria-hidden="true">↗</span></h3>
+            <p>Robot, moje maturitní práce v oboru IT v průmyslu na SŠ Jablunkov.</p>
+          </a>
+          <a class="project project-link reveal" href="https://lumen.mican.dpdns.org" target="_blank" rel="noopener noreferrer" aria-label="Otevřít Webový downloader videí v nové záložce">
+            <div class="project-top">
+              <span class="project-icon">⬇</span>
+              <span class="badge">Rozpracováno</span>
+            </div>
+            <h3>Webový downloader videí <span class="arrow" aria-hidden="true">↗</span></h3>
+            <p>Webová aplikace pro stahování videí s moderním vzhledem. Frontend v HTML, CSS a JavaScriptu.</p>
+            <ul class="tags mono"><li>HTML</li><li>CSS</li><li>JavaScript</li></ul>
+          </a>
+          <article class="project reveal">
+            <div class="project-top">
+              <span class="project-icon">{ }</span>
+              <span class="badge badge-alt">Ukázka</span>
+            </div>
+            <h3>Tento portfolio web</h3>
+            <p>Responzivní osobní web bez frameworků, jen čisté HTML, CSS a JavaScript.</p>
+            <ul class="tags mono"><li>HTML</li><li>CSS</li><li>JavaScript</li></ul>
+          </article>
+          <article class="project project-empty reveal">
+            <div class="project-top"><span class="project-icon">+</span></div>
+            <h3>Další projekt</h3>
+            <p>Tady je místo na tvůj další projekt. Uprav ho v souboru <code>index.html</code>.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ŽIVOTOPIS -->
+    <section id="zivotopis" class="section">
+      <div class="container">
+        <h2 class="section-title reveal"><span class="mono">04</span> Vzdělání a praxe</h2>
+        <div class="timeline">
+          <div class="tl-item reveal">
+            <span class="tl-dot"></span>
+            <span class="tl-date mono">do 2027</span>
+            <h3>SŠ Jablunkov</h3>
+            <p class="tl-sub">Obor IT v průmyslu, maturitní ročník</p>
+          </div>
+          <div class="tl-item reveal">
+            <span class="tl-dot"></span>
+            <span class="tl-date mono">Brigáda</span>
+            <h3>Baroz Ener</h3>
+            <p class="tl-sub">Elektrotechnická firma</p>
+            <p>Zapojování zásuvek a světel, práce na rekonstrukcích a přestavbách elektrických rozvodů.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- KONTAKT -->
+    <section id="kontakt" class="section">
+      <div class="container">
+        <h2 class="section-title reveal"><span class="mono">05</span> Kontakt</h2>
+        <div class="contact-grid">
+          <div class="contact-info reveal">
+            <p class="lead">Hledám práci po maturitě. Ozvi se mi, pokud máš nabídku nebo jen otázku.</p>
+            <ul class="contact-list">
+              <li><span class="mono">E-mail</span><a href="mailto:patrikmician2@gmail.com">patrikmician2@gmail.com</a></li>
+              <li><span class="mono">Telefon</span><a href="tel:+420792240769">792 240 769</a></li>
+            </ul>
+          </div>
+          <form class="contact-form reveal" id="contactForm" novalidate>
+            <label>Jméno
+              <input type="text" id="cName" name="name" placeholder="Jan Novák" required>
+            </label>
+            <label>Tvůj e-mail
+              <input type="email" id="cEmail" name="email" placeholder="jan@example.cz" required>
+            </label>
+            <label>Zpráva
+              <textarea id="cMsg" name="message" rows="5" placeholder="Dobrý den, ..." required></textarea>
+            </label>
+            <button type="submit" class="btn btn-primary">Odeslat zprávu</button>
+            <p class="form-note" id="formNote" role="status"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>© <span id="year"></span> Patrik Mičian</p>
+      <a href="#top" class="to-top">Nahoru ↑</a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
