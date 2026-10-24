@@ -158,8 +158,8 @@ function init() {
   // Výchozí pozice z firmwaru: S0 130, S1 100, S2 150, S3 0, S4 180, S5 70
   const pose = (a) => ({
     base: deg(a[5] - 90),            // S5: 90° = rovně
-    shoulder: deg((150 - a[4]) * 0.75), // S4: 180° = rameno mírně dozadu
-    elbow: deg(112 - a[3] * 0.9),    // S3: 0° = předloktí vodorovně dopředu
+    shoulder: deg((90 - a[4]) * 0.75),  // S4: 90° = rameno svisle
+    elbow: deg(90 - a[3] * 0.9),     // S3: 0° = předloktí vodorovně dopředu
     wrist: deg((150 - a[2]) * 0.9),  // S2: 150° = kleště v ose předloktí
     roll: deg(a[1] - 100),           // S1: 100° = kleště vodorovně
     grip: THREE.MathUtils.clamp((130 - a[0]) / 80, 0, 1), // S0: 130 zavřeno, 50 otevřeno
