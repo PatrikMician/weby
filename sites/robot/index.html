@@ -4,7 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Řízení Robotického Ramene</title>
+  <meta name="description" content="RoboArm v1.0 – 6osé robotické rameno s Arduinem Nano. Maturitní práce Patrika Mičiana: návod, zapojení, kód, 3D simulace a ovládání přes Web Serial.">
   <link rel="stylesheet" href="style.css">
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
 </head>
 <body>
 
@@ -16,12 +25,27 @@
       <li><a href="#navod">Jak ovládat</a></li>
       <li><a href="galerie.html">Galerie</a></li>
       <li><a href="#dily">Kde koupit díly</a></li>
+      <li><a href="#technika">Technika</a></li>
       <li><a href="#kod">Kód Arduino</a></li>
-      <li><a href="#ovladani">Ovládání</a></li>
+      <li><a href="#ovladani">Simulace a ovládání</a></li>
     </ul>
   </nav>
 
   <div class="container">
+
+    <!--Úvod-->
+    <header class="hero">
+      <div>
+        <h1>RoboArm <em>6osé robotické rameno</em></h1>
+        <p>Maturitní práce Patrika Mičiana, obor IT v průmyslu na SŠ Jablunkov. Kovové rameno se šesti servy řízené Arduinem Nano. Ovládá se dvěma joysticky, nebo přímo z tohoto webu. Bez robota si ho můžeš vyzkoušet ve 3D simulaci.</p>
+        <div class="hero-btns">
+          <a href="#ovladani" class="main-btn">🦾 Vyzkoušet simulaci</a>
+          <a href="galerie.html" class="btn-ghost">Galerie</a>
+          <a href="https://github.com/PatrikMician/6-DOS-RoboArm" target="_blank" rel="noopener" class="btn-ghost">GitHub</a>
+        </div>
+      </div>
+      <img src="foto/cely-bot-on.jpg" alt="Robotické rameno s ovladačem a displejem na zelené desce">
+    </header>
 
     <!--Sekce: O robotu-->
     <section id="o-robotu" class="card">
@@ -39,7 +63,15 @@
         </div>
         <div class="feature-item">
           <h3>💾 Paměť</h3>
-          <p>Ukládání výchozích nebo uložených pozic v EEPROM mikrokontroléru.</p>
+          <p>Pozici kleští, ramene a základny ukládá do EEPROM (příkazem <code>p</code> nebo při přepnutí kleští). Po zapnutí se rameno vždy vrací do výchozí pozice.</p>
+        </div>
+        <div class="feature-item">
+          <h3>💃 Tanec</h3>
+          <p>Stiskem obou tlačítek joysticků zároveň rameno spustí taneční sekvenci, stejným stiskem ji ukončíš.</p>
+        </div>
+        <div class="feature-item">
+          <h3>🧊 3D simulace</h3>
+          <p>Na webu je 3D model ramene, který se hýbe podle posuvníků v sekci Ovládání, i bez připojeného robota.</p>
         </div>
       </div>
     </section>
@@ -78,9 +110,14 @@
       <b>GND:</b> GND <br>
       <b>VRx:</b> A0 <br>
       <b>VRy:</b> A1 <br>
-      <b>SW:</b> 4 <br>
-      <b>Pravý: </b><br>
-      </p>
+      <b>SW:</b> D2 <br>
+      <b>Pravý:</b> <br>
+      <b>VCC:</b> 5V <br>
+      <b>GND:</b> GND <br>
+      <b>VRx:</b> A2 <br>
+      <b>VRy:</b> A3 <br>
+      <b>SW:</b> D4 </p>
+      <p>Serva jsou napájená přes svorku napájení na desce PCA9685.</p>
 
     </section>
     <!--Sekce: Jak ovládat rameno-->
@@ -103,8 +140,8 @@
         <div class="guide-box">
           <h3>🕹️ Pravý Joystick</h3>
           <ul>
-            <li><strong>Pohyb Vlevo / Vpravo (Osa X):</strong> Ovládá Otočnou základnu (Servo 5).</li>
-            <li><strong>Pohyb Nahoru / Dolů (Osa Y):</strong> Ovládá Hlavní rameno / Výšku (Servo 4).</li>
+            <li><strong>Pohyb Vlevo / Vpravo (Osa X):</strong> Ovládá Hlavní rameno (Servo 4).</li>
+            <li><strong>Pohyb Nahoru / Dolů (Osa Y):</strong> Ovládá Otočnou základnu (Servo 5).</li>
             <li><strong>Stisk tlačítka (SW2):</strong> Přepíná režim natáčení kleští.</li>
           </ul>
         </div>
@@ -112,7 +149,12 @@
 
       <div class="special-mode-box">
         <h4>💡 Režim natáčení kleští (Po stisku tlačítka na Pravém joysticku)</h4>
-        <p>Pokud stisknete tlačítko na pravém joysticku, přepne se Osa X pravého joysticku na **Otočení kleští (Servo 1)**. Dalším stiskem tlačítka se ovladač vrátí zpět k řízení hlavního ramene.</p>
+        <p>Pokud stisknete tlačítko na pravém joysticku, přepne se Osa X pravého joysticku na <strong>Otočení kleští (Servo 1)</strong>. Dalším stiskem tlačítka se ovladač vrátí zpět k řízení hlavního ramene.</p>
+      </div>
+
+      <div class="special-mode-box">
+        <h4>💃 Tanec</h4>
+        <p>Stiskni obě tlačítka joysticků naráz a rameno začne tančit (na displeji „*** TANEC! ***“). Opětovným stiskem obou tlačítek tanec ukončíš.</p>
       </div>
     </section>
 
@@ -178,8 +220,77 @@
             <td>Zde stáhněte STL soubor krabičky displeje</td>
             <td><a href="zip-soubory/krabicka_displeje.zip" download class="buy-btn">Stáhnout ZIP</a></td>
           </tr>
+          <tr>
+            <td><strong>Box Arduina</strong></td>
+            <td>Zde stáhněte STL soubor boxu pro Arduino (box a víko je zvlášť)</td>
+            <td><a href="zip-soubory/box_arduino.zip" download class="buy-btn">Stáhnout ZIP</a></td>
+          </tr>
         </tbody>
       </table>
+    </section>
+
+    <!--Sekce: Technika-->
+    <section id="technika" class="card">
+      <h2>Technické parametry</h2>
+      <table class="parts-table">
+        <thead>
+          <tr><th>Servo</th><th>Funkce</th><th>Výchozí pozice</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>S0</strong></td><td>Kleště (joystick: zavřeno 120°, otevřeno 50°)</td><td>130°</td></tr>
+          <tr><td><strong>S1</strong></td><td>Natočení kleští</td><td>100°</td></tr>
+          <tr><td><strong>S2</strong></td><td>Sklon kleští</td><td>150°</td></tr>
+          <tr><td><strong>S3</strong></td><td>Předloktí</td><td>0°</td></tr>
+          <tr><td><strong>S4</strong></td><td>Hlavní rameno</td><td>180°</td></tr>
+          <tr><td><strong>S5</strong></td><td>Otočná základna</td><td>70°</td></tr>
+        </tbody>
+      </table>
+
+      <div class="features-grid">
+        <div class="feature-item">
+          <h3>⚙️ PCA9685</h3>
+          <p>I2C adresa <code>0x40</code>, frekvence 50 Hz, pulz 500–2500 µs pro 0–180°. Serva od kanálu 0.</p>
+        </div>
+        <div class="feature-item">
+          <h3>📺 LCD 16x2</h3>
+          <p>I2C adresa <code>0x27</code>. Ukazuje úhly S1–S5 a překresluje jen změněné hodnoty. Při přepnutí kleští na 1,5 s „STAV KLESTI“.</p>
+        </div>
+        <div class="feature-item">
+          <h3>🕹️ Joysticky</h3>
+          <p>2× KY-023, čtení každých 5 ms, mrtvá zóna 440–580, tlačítka s ošetřením zákmitů 250 ms.</p>
+        </div>
+      </div>
+
+      <h3 style="margin-top:1.6rem">Příkazy přes USB (Sériová linka, 9600 baud)</h3>
+      <table class="parts-table">
+        <thead><tr><th>Příkaz</th><th>Co udělá</th></tr></thead>
+        <tbody>
+          <tr><td><code>&lt;servo&gt; &lt;úhel&gt;</code></td><td>Nastaví servo 0–5 na úhel 0–180, např. <code>3 120</code>. Arduino odpoví „Servo 3 nastaveno na 120“.</td></tr>
+          <tr><td><code>p</code></td><td>Uloží pozice do EEPROM.</td></tr>
+          <tr><td><code>r</code></td><td>Vrátí všechna serva do výchozí pozice.</td></tr>
+        </tbody>
+      </table>
+      <p>Každý příkaz končí novým řádkem. Stejné příkazy posílá webové ovládání níže.</p>
+
+      <h3 style="margin-top:1.6rem">Když něco nejde</h3>
+      <ul>
+        <li><strong>Kompilace hlásí <code>Adafruit_I2CDevice.h: No such file or directory</code></strong> – ve Správci knihoven doinstaluj <code>Adafruit BusIO</code>.</li>
+        <li><strong>Web se nepřipojí k Arduinu</strong> – zavři Sériový monitor v Arduino IDE, drží COM port obsazený.</li>
+        <li><strong>Počítač Arduino nevidí</strong> – nainstaluj ovladač CH34x (ke stažení výše).</li>
+        <li><strong>Ovládání z webu</strong> funguje jen v Chrome, Edge nebo Opeře (Web Serial). Firefox a Safari ho nepodporují.</li>
+        <li><strong>Po připojení chvíli nic</strong> – Arduino se po otevření portu restartuje, web proto 2 sekundy čeká.</li>
+      </ul>
+    </section>
+
+    <!--Sekce: Vývoj-->
+    <section id="vyvoj" class="card">
+      <h2>Jak rameno vznikalo</h2>
+      <ol>
+        <li><strong>První stavba ramene</strong> (únor 2025) – prototyp zapojený na nepájivém poli.</li>
+        <li><strong>Druhá verze</strong> – napájení z ATX zdroje.</li>
+        <li><strong>Finální verze</strong> – Arduino Nano, PCA9685, displej a ovladač s joysticky v 3D tištěných krabičkách.</li>
+      </ol>
+      <p>Autor: <strong>Patrik Mičian</strong>, maturitní práce, SŠ Jablunkov, obor IT v průmyslu. Zdrojový kód je na <a href="https://github.com/PatrikMician/6-DOS-RoboArm" target="_blank" rel="noopener">GitHubu</a>.</p>
     </section>
 
     <!--Sekce: Kód-->
@@ -541,8 +652,18 @@ void handleSerial() {
 
     <!--Sekce: Ovládání -->
     <section id="ovladani" class="card">
-      <h2>Webové ovládání Arduina</h2>
-      <p>Připojte Arduino přes USB kabel k počítači a klikněte na tlačítko <strong>Připojit Arduino</strong>.</p>
+      <h2>3D simulace a ovládání</h2>
+      <p>Posuvníky hýbou 3D modelem ramene vždycky. Když připojíš Arduino přes USB a klikneš na <strong>Připojit Arduino</strong>, hýbe se zároveň i skutečný robot. Model můžeš myší otáčet a kolečkem přibližovat.</p>
+
+      <div class="sim-wrap">
+        <canvas id="sim" aria-label="3D model robotického ramene"></canvas>
+        <span class="sim-badge" id="sim-mode">simulace</span>
+        <p class="sim-fallback">Tvůj prohlížeč neumí 3D (WebGL), simulace se nezobrazí. Ovládání funguje dál.</p>
+      </div>
+      <div class="btn-group sim-actions">
+        <button id="btn-reset" class="action-btn">↺ Výchozí pozice</button>
+        <button id="btn-dance" class="action-btn">💃 Tanec (jen simulace)</button>
+      </div>
       
       <div class="serial-status">
         <button id="connect-btn" class="main-btn">🔌 Připojit Arduino</button>
@@ -551,35 +672,35 @@ void handleSerial() {
 
       <div class="control-panel">
         <div class="servo-control">
-          <label>Servo 1 (Natočení kleští): <span id="val-1">90</span>°</label>
-          <input type="range" id="servo1" min="0" max="180" value="90" disabled>
+          <label>Servo 1 (Natočení kleští): <span id="val-1">100</span>°</label>
+          <input type="range" id="servo1" min="0" max="180" value="100">
         </div>
 
         <div class="servo-control">
-          <label>Servo 2 (Sklon kleští): <span id="val-2">90</span>°</label>
-          <input type="range" id="servo2" min="50" max="130" value="90" disabled>
+          <label>Servo 2 (Sklon kleští): <span id="val-2">150</span>°</label>
+          <input type="range" id="servo2" min="50" max="150" value="150">
         </div>
 
         <div class="servo-control">
-          <label>Servo 3 (Předloktí): <span id="val-3">90</span>°</label>
-          <input type="range" id="servo3" min="0" max="180" value="90" disabled>
+          <label>Servo 3 (Předloktí): <span id="val-3">0</span>°</label>
+          <input type="range" id="servo3" min="0" max="180" value="0">
         </div>
 
         <div class="servo-control">
-          <label>Servo 4 (Hlavní rameno): <span id="val-4">90</span>°</label>
-          <input type="range" id="servo4" min="10" max="170" value="90" disabled>
+          <label>Servo 4 (Hlavní rameno): <span id="val-4">180</span>°</label>
+          <input type="range" id="servo4" min="10" max="180" value="180">
         </div>
 
         <div class="servo-control">
-          <label>Servo 5 (Základna): <span id="val-5">90</span>°</label>
-          <input type="range" id="servo5" min="0" max="180" value="90" disabled>
+          <label>Servo 5 (Základna): <span id="val-5">70</span>°</label>
+          <input type="range" id="servo5" min="0" max="180" value="70">
         </div>
 
         <div class="servo-control">
           <label>Kleště (Servo 0):</label>
           <div class="btn-group">
-            <button id="btn-open" class="action-btn" disabled>Otevřít</button>
-            <button id="btn-close" class="action-btn" disabled>Zavřít</button>
+            <button id="btn-open" class="action-btn">Otevřít</button>
+            <button id="btn-close" class="action-btn">Zavřít</button>
           </div>
         </div>
       </div>
@@ -588,5 +709,6 @@ void handleSerial() {
   </div>
 
   <script src="script.js"></script>
+  <script type="module" src="sim.js"></script>
 </body>
 </html>

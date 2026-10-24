@@ -1,3 +1,7 @@
+// Aktuální úhly serv S0–S5 pro 3D simulaci (sim.js), výchozí pozice z firmwaru
+const DEFAULT_POSE = [130, 100, 150, 0, 180, 70];
+window.armState = [...DEFAULT_POSE];
+
 let port = null;
 let writer = null;
 let writableStreamClosed = null;
@@ -6,8 +10,11 @@ const connectBtn = document.getElementById('connect-btn');
 const statusText = document.getElementById('status-text');
 const supported = "serial" in navigator;
 
+// Bez Web Serial funguje aspoň simulace, ovládání skutečného robota ne
 if (!supported) {
-  alert("Váš prohlížeč nepodporuje rozhraní Web Serial API. Použijte nejnovější Google Chrome nebo Microsoft Edge.");
+  connectBtn.disabled = true;
+  connectBtn.title = "Ovládání robota funguje jen v Chrome, Edge nebo Opeře";
+  statusText.innerText = "Prohlížeč nepodporuje Web Serial – jen simulace";
 }
 
 async function disconnect() {
@@ -95,11 +102,15 @@ function updateUI(isConnected) {
     connectBtn.innerText = "🔌 Připojit Arduino";
   }
 
-  const inputs = document.querySelectorAll('.control-panel input, .control-panel button');
-  inputs.forEach(input => input.disabled = !isConnected);
+  const badge = document.getElementById('sim-mode');
+  if (badge) {
+    badge.innerText = isConnected ? "simulace + robot" : "simulace";
+    badge.classList.toggle('live', isConnected);
+  }
 }
 
 async function sendServoCommand(servoId, angle) {
+  window.armState[servoId] = Number(angle);
   if (writer) {
     const command = `${servoId} ${angle}\n`;
     try {
@@ -118,7 +129,9 @@ for (let i = 1; i <= 5; i++) {
 
   if (slider) {
     slider.addEventListener('input', (e) => {
+      stopDance();
       valSpan.innerText = e.target.value;
+      window.armState[i] = Number(e.target.value);
       // při tažení posíláme nejvýš ~15× za sekundu, ať se nezahltí sériová linka
       const now = Date.now();
       if (!lastSent[i] || now - lastSent[i] >= 60) {
@@ -139,14 +152,78 @@ const btnClose = document.getElementById('btn-close');
 
 if (btnOpen) {
   btnOpen.addEventListener('click', () => {
-    sendServoCommand(0, 100);
+    stopDance();
+    sendServoCommand(0, 60);
   });
 }
 
 if (btnClose) {
   btnClose.addEventListener('click', () => {
-    sendServoCommand(0, 60);
+    stopDance();
+    sendServoCommand(0, 100);
   });
+}
+
+// Posuvníky ukážou aktuální pózu (po resetu a během tance)
+function syncSliders() {
+  for (let i = 1; i <= 5; i++) {
+    const slider = document.getElementById(`servo${i}`);
+    const valSpan = document.getElementById(`val-${i}`);
+    if (slider) slider.value = window.armState[i];
+    if (valSpan) valSpan.innerText = window.armState[i];
+  }
+}
+
+// Výchozí pozice: simulace i robot (příkaz r)
+const btnReset = document.getElementById('btn-reset');
+if (btnReset) {
+  btnReset.addEventListener('click', async () => {
+    stopDance();
+    window.armState = [...DEFAULT_POSE];
+    syncSliders();
+    if (writer) {
+      try { await writer.write("r\n"); } catch (err) { console.error("Reset se nepodařilo odeslat: ", err); }
+    }
+  });
+}
+
+// Tanec – stejná sekvence jako zahrajTanec() ve firmwaru, ale jen v simulaci
+// (robot tančí po stisku obou tlačítek joysticků)
+const DANCE = [
+  [60, 90, 90, 130, 140, 90, 6], [130, 45, 135, 60, 60, 150, 7], [60, 135, 45, 120, 120, 30, 5],
+  ...Array(4).fill([[130, 40, 140, 110, 90, 90, 4], [60, 140, 40, 70, 90, 90, 4]]).flat(),
+  [130, 120, 60, 140, 150, 140, 8], [60, 60, 120, 50, 60, 40, 8], [60, 90, 90, 130, 120, 90, 6],
+  ...Array(5).fill([[130, 90, 90, 130, 120, 90, 3], [60, 90, 90, 130, 120, 90, 3]]).flat(),
+  [130, 100, 150, 0, 180, 70, 8],
+];
+let dancing = false;
+const btnDance = document.getElementById('btn-dance');
+
+function stopDance() {
+  dancing = false;
+  if (btnDance) btnDance.innerText = "💃 Tanec (jen simulace)";
+}
+
+async function dance() {
+  dancing = true;
+  btnDance.innerText = "⏹ Zastavit tanec";
+  while (dancing) {
+    for (const step of DANCE) {
+      const target = step.slice(0, 6);
+      const stepDelay = step[6];
+      // jako moveStep(): každé servo se posune o 1° za krok
+      while (dancing && target.some((t, i) => window.armState[i] !== t)) {
+        window.armState = window.armState.map((v, i) => v + Math.sign(target[i] - v));
+        syncSliders();
+        await new Promise((r) => setTimeout(r, stepDelay + 4));
+      }
+      if (!dancing) return;
+    }
+  }
+}
+
+if (btnDance) {
+  btnDance.addEventListener('click', () => (dancing ? stopDance() : dance()));
 }
 
 const copyBtn = document.getElementById('copy-code-btn');

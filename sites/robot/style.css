@@ -238,3 +238,25 @@ input[type=range]:disabled::-moz-range-thumb { cursor: not-allowed; }
   .card { padding: 1.25rem; }
   .parts-table th:nth-child(2), .parts-table td:nth-child(2) { display: none; }
 }
+
+/* ---------- 3D simulace ---------- */
+.sim-wrap {
+  position: relative; height: clamp(320px, 55vw, 480px); margin: 1.2rem 0 .8rem;
+  border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden;
+  background: radial-gradient(600px 300px at 50% 0%, rgba(34, 211, 238, .12), transparent 70%), var(--bg-2);
+}
+.sim-wrap canvas { width: 100%; height: 100%; display: block; cursor: grab; }
+.sim-wrap canvas:active { cursor: grabbing; }
+.sim-badge {
+  position: absolute; top: .8rem; left: .8rem; font-size: .8rem; font-weight: 700;
+  padding: .2rem .6rem; border-radius: 999px; color: var(--muted);
+  background: rgba(10, 14, 20, .7); border: 1px solid var(--line);
+}
+.sim-badge.live { color: var(--ok); border-color: rgba(52, 211, 153, .4); }
+.sim-fallback { display: none; position: absolute; inset: 0; margin: 0; padding: 2rem; place-content: center; text-align: center; color: var(--muted); }
+.sim-wrap.no-webgl .sim-fallback { display: grid; }
+.sim-wrap.no-webgl canvas { display: none; }
+.sim-actions { margin-bottom: 1.4rem; }
+@media (max-width: 720px) {
+  .hero { grid-template-columns: 1fr; padding: 1.6rem; }
+}
