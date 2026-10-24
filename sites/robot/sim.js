@@ -41,17 +41,20 @@ function init() {
   const key = new THREE.DirectionalLight(0xffffff, 2);
   key.position.set(4, 8, 5);
   scene.add(key);
-  const rim = new THREE.PointLight(0x22d3ee, 30, 20, 2);
+  const rim = new THREE.PointLight(0x3ee6ff, 40, 20, 2);
   rim.position.set(-4, 4, -3);
   scene.add(rim);
+  const rimViolet = new THREE.PointLight(0x8b5cf6, 35, 20, 2);
+  rimViolet.position.set(4, 2.5, -4);
+  scene.add(rimViolet);
 
   /* ---------- Materiály (černé díly, stříbrné kleště, zelená deska jako na fotkách) ---------- */
-  const black = new THREE.MeshStandardMaterial({ color: 0x15171c, metalness: 0.4, roughness: 0.45 });
-  const servoMat = new THREE.MeshStandardMaterial({ color: 0x0b0c10, metalness: 0.2, roughness: 0.6 });
-  const silver = new THREE.MeshStandardMaterial({ color: 0xc9ced8, metalness: 1, roughness: 0.22 });
-  const board = new THREE.MeshStandardMaterial({ color: 0x2f6b0c, roughness: 0.9 });
-  const glow = new THREE.MeshStandardMaterial({ color: 0x22d3ee, emissive: 0x22d3ee, emissiveIntensity: 1.6 });
-  const orange = new THREE.MeshStandardMaterial({ color: 0xffb020, emissive: 0xffb020, emissiveIntensity: 1.2 });
+  // Styl jako 3D rameno na portfoliu: tmavý kov, svítící klouby, oranžové kleště
+  const black = new THREE.MeshStandardMaterial({ color: 0x3a4260, metalness: 0.9, roughness: 0.22 });
+  const servoMat = new THREE.MeshStandardMaterial({ color: 0x1c2132, metalness: 0.85, roughness: 0.32 });
+  const silver = new THREE.MeshStandardMaterial({ color: 0xc9ced8, metalness: 1, roughness: 0.2 });
+  const glow = new THREE.MeshStandardMaterial({ color: 0x3ee6ff, emissive: 0x3ee6ff, emissiveIntensity: 2.2 });
+  const orange = new THREE.MeshStandardMaterial({ color: 0xff8a3d, emissive: 0xff8a3d, emissiveIntensity: 2.4 });
 
   const box = (w, h, d, mat, x = 0, y = 0, z = 0) => {
     const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat);
@@ -73,12 +76,31 @@ function init() {
     return g;
   };
 
-  scene.add(box(7, 0.1, 4.6, board, 0, -0.05, 0.6));
-  const grid = new THREE.GridHelper(7, 14, 0x4a8f1a, 0x4a8f1a);
-  grid.position.set(0, 0.002, 0.6);
+  scene.fog = new THREE.Fog(0x0c0e18, 10, 24);
+  const grid = new THREE.GridHelper(30, 60, 0x2b3a6b, 0x1d2546);
   grid.material.transparent = true;
-  grid.material.opacity = 0.35;
+  grid.material.opacity = 0.7;
   scene.add(grid);
+  const glowTex = (() => {
+    const c = document.createElement("canvas");
+    c.width = c.height = 256;
+    const g = c.getContext("2d");
+    const grad = g.createRadialGradient(128, 128, 0, 128, 128, 128);
+    grad.addColorStop(0, "rgba(62,230,255,.5)");
+    grad.addColorStop(0.45, "rgba(139,92,246,.16)");
+    grad.addColorStop(1, "rgba(0,0,0,0)");
+    g.fillStyle = grad;
+    g.fillRect(0, 0, 256, 256);
+    return new THREE.CanvasTexture(c);
+  })();
+  const floorGlow = new THREE.Mesh(new THREE.PlaneGeometry(7, 7), new THREE.MeshBasicMaterial({ map: glowTex, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false }));
+  floorGlow.rotation.x = -Math.PI / 2;
+  floorGlow.position.y = 0.005;
+  scene.add(floorGlow);
+  const ring = new THREE.Mesh(new THREE.TorusGeometry(0.95, 0.02, 8, 64), glow);
+  ring.rotation.x = Math.PI / 2;
+  ring.position.y = 0.13;
+  scene.add(ring);
 
   /* ---------- Kinematický řetězec ---------- */
   // S5 základna (otáčení kolem svislé osy)
@@ -116,16 +138,16 @@ function init() {
 
   // S1 natočení kleští (rotace kolem osy zápěstí)
   const roll = new THREE.Group();
-  roll.position.y = 0.55;
+  roll.position.y = 0.5;
   wrist.add(roll);
-  roll.add(box(0.42, 0.7, 0.22, servoMat, 0, 0.3, 0));
-  roll.add(cyl(0.16, 0.1, silver, 0, 0.7, 0));
-  roll.add(box(0.7, 0.1, 0.24, silver, 0, 0.78, 0));
+  roll.add(box(0.42, 0.36, 0.22, servoMat, 0, 0.12, 0));
+  roll.add(cyl(0.16, 0.08, glow, 0, 0.34, 0));
+  roll.add(box(0.7, 0.1, 0.24, silver, 0, 0.42, 0));
 
   // S0 kleště: dva prsty
   const fingers = [-1, 1].map((side) => {
     const f = new THREE.Group();
-    f.position.set(side * 0.3, 0.82, 0);
+    f.position.set(side * 0.3, 0.46, 0);
     f.add(box(0.06, 0.65, 0.18, silver, 0, 0.32, 0));
     f.add(box(0.03, 0.4, 0.19, orange, -side * 0.04, 0.42, 0));
     roll.add(f);
